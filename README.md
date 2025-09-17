@@ -9,7 +9,10 @@
 	Tilt sensor(SW200D)
 
 ## Circuit Diagram:
- 
+
+ ![WhatsApp Image 2025-09-17 at 20 36 03_ffb5e040](https://github.com/user-attachments/assets/9fcd588e-a01d-4c91-b7ee-d11c654f3b4d)
+
+
 ## Theory :
  The Arduino Uno is powered by the ATmega328P, an 8-bit microcontroller that runs at 16 MHz. It has 32 KB of flash memory, 2 KB of SRAM, and 1 KB of EEPROM. The board has 14 digital I/O pins (of which 6 can be used as PWM outputs) and 6 analog input pins. These pins allow the board to interface with various sensors, actuators, and other devices.The Arduino Uno can be powered via a USB connection or an external power supply. The board has a built-in voltage regulator to manage power from 7 to 12 volts.
 The board is programmable using the Arduino IDE (Integrated Development Environment), which supports a simplified version of C/C++. The code, known as a "sketch," is uploaded to the board via a USB connection. The Uno has a USB-B port, which is used for communication with a computer. The USB connection also powers the board when connected. The board includes a reset button that restarts the microcontroller, useful during programming and troubleshooting. The In-Circuit Serial Programming (ICSP) header allows for low-level programming of the microcontroller or firmware updates. The Uno has a built-in LED on pin 13, commonly used for simple tests and debugging.
@@ -47,11 +50,55 @@ Step 7: Save Your Work
 
 ## Code:
 
+// C++ code
+//
+int sensorvalue = 0;
 
+int distance = 0;
+
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+  pinMode(triggerPin, OUTPUT);  // Clear the trigger
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigger pin to HIGH state for 10 microseconds
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  pinMode(echoPin, INPUT);
+  // Reads the echo pin, and returns the sound wave travel time in microseconds
+  return pulseIn(echoPin, HIGH);
+}
+
+void setup()
+{
+  pinMode(3, OUTPUT);
+  pinMode(7, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  distance = 0.01723 * readUltrasonicDistance(8, 8);
+
+  if (distance <= 50) {
+    digitalWrite(3, HIGH);
+    digitalWrite(7, HIGH);
+    Serial.println("ALERT");
+  } else {
+    digitalWrite(3, LOW);
+    digitalWrite(7, LOW);
+  }
+  delay(10); // Delay a little bit to improve simulation performance
+}
 
 ## Output:
 
  
+
+https://github.com/user-attachments/assets/0a71d129-ec25-4843-a0ce-4a1ef0ce1605
+
+
 
 
 ## Result:
